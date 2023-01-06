@@ -16,36 +16,48 @@ public class Account {
 		this.status = false;
 	}
 	
-	
-	public void openAcc(){
+	public void openAcc(int typeAcc){
 		if(this.status==false) {
-			this.status = true;
+			this.setStatus(true);
+		}
+		
+		this.setTypeAcc(typeAcc);
+		
+		if(typeAcc == 0) {
+			this.setBalance(100);
+		} else if(typeAcc ==1) {
+			this.setBalance(150);
 		}
 	}
+	
 	public int closeAcc(){
 		if (balance==0) {
-			this.status = false;
+			this.setStatus(false);
 			return 0;
 		} else return 1;
 	}
-	public void depositar(double value){
-		this.balance += value;
+	
+	public void deposit(double value){
+		this.setBalance(this.getBalance() + value);
 	}
-	public void sacar(double value){
-			this.balance -= value;	
-		//limite de saque de acordo com o dinheiro na conta
+	public int withdrawal(double value){
+		
+		if(this.getBalance() >= value) {
+			this.setBalance(this.getBalance() - value);
+			return 0;
+		} else if(this.getBalance() < value){
+			return 1;
+		} else return 3;
+		
 	}
 	public void monthlyPayment(){
-		double monthly = 0;
+		double monthly = 20;
 		
 		if(this.getTypeAcc() == 0) {
 			monthly = 12;
-			this.balance -= monthly;
-		} else if (this.getTypeAcc() == 1) {
-			monthly = 20;
-			this.balance -= monthly;
-		}
+		} 
 		
+		this.setBalance(this.getBalance() - monthly);
 		System.out.println("Value: " + monthly);
 	}
 	
@@ -93,16 +105,16 @@ public class Account {
 	public String toString() {
 		
 		if(typeAcc == 0) {
-			return    "- Account [Number Account: "+ numAcc 
-					+ "\n- TypeAcc [Checking Account - " + typeAcc + "],"
+			return    "- Account [Number Account: "+ numAcc + "]" 
+					+ "\n- TypeAcc [Checking Account - " + typeAcc + "]"
 					+ "\n- Owner [" + owner + "]"
-					+ "\n- Balance [" + balance + "]"
+					+ "\n- Balance [$" + balance + "]"
 					+ "\n- Status Account [" + status + "]";
 		} else if (typeAcc ==1) {
-			return "- Account [Number Account: "+ numAcc 
-					+ "\n- TypeAcc [Savings Account - " + typeAcc + "],"
+			return "- Account [Number Account: "+ numAcc + "]"
+					+ "\n- TypeAcc [Savings Account - " + typeAcc + "]"
 					+ "\n- Owner [" + owner + "]"
-					+ "\n- Balance [" + balance + "]"
+					+ "\n- Balance  [$" + balance + "]"
 					+ "\n- Status Account [" + status + "]";
 		} else return "[Error! bad value]";
 		

@@ -31,22 +31,15 @@ public class Program {
 			owner = sc.next();
 			
 			Account acc = new Account(numberAccount, typeAcc, owner);
-			acc.openAcc();
-			if(typeAcc == 0) {
-				balanceMod += 100;
-				acc.setBalance(balanceMod);
-			} else if(typeAcc == 1) {
-				balanceMod += 150;
-				acc.setBalance(balanceMod);
-			} else System.out.println("Enter a valid value");		
-			
+			acc.openAcc(typeAcc);
+		
 			int ans = 0;
 			double value = 0;
 			do {
 				System.out.println("=======================================================");
 				//criar o método tela inicial aqui;
 				System.out.println("Choose an option:\n");
-				System.out.println("0. Verify account data;\n");
+				System.out.println("0. Verify account data;");
 				System.out.println("1. Verify bank balance;");
 				System.out.println("2. Withdraw amount;");
 				System.out.println("3. Cash deposit;");
@@ -76,11 +69,20 @@ public class Program {
 							break;
 						case 2:
 							if (acc.getStatus() == true) {
+								
 								System.out.println("Enter withdrawal amount: ");
 								value = sc.nextDouble();
-								acc.sacar(value);
 								
-								System.out.println("New balance: " + acc.getBalance());
+								if(acc.withdrawal(value) == 0) {
+									System.out.println("Sucessfully withdrawn.");
+									System.out.println("New balance: " + acc.getBalance());
+
+								} else if (acc.withdrawal(value) == 1) {
+									System.out.println("Insufficient balance for withdrawn.");
+									System.out.println("Current balance: " + acc.getBalance());
+								
+								}
+								
 								System.out.println();
 
 							} else if (acc.getStatus() == false) {
@@ -91,7 +93,7 @@ public class Program {
 							if (acc.getStatus() == true) {
 								System.out.println("Enter deposit amount: ");
 								value = sc.nextDouble();
-								acc.depositar(value);
+								acc.deposit(value);
 								
 								System.out.println("New balance: " + acc.getBalance());
 								System.out.println();
@@ -131,7 +133,7 @@ public class Program {
 								System.out.print("=> ");
 
 								if (answr == 0) {
-									acc.openAcc();
+									acc.openAcc(typeAcc);
 									System.out.println("Welcome back " + acc.getOwner() + "!");
 								} else if (answr == 1) {
 									System.out.println("Operation canceled.");
