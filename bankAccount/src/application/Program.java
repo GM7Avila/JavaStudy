@@ -18,16 +18,16 @@ public class Program {
 		do {
 			System.out.print("Insert NumberAcc: ");
 				numberAccount = sc.nextInt();
-			System.out.print("\n0. Conta Corrente\n1. Conta Poupança\n");
+			System.out.print("\n0. Cheking Account\n1. Savings Account\n");
 			System.out.print("=> ");
 			typeAcc = sc.nextInt();
 				if (typeAcc != 0 && typeAcc != 1) {
-					System.out.println("Insira um valor válido");
+					System.out.println("Enter a valid value");
 				} else a = 0;
 			
 		} while (a == 1);
 		
-			System.out.print("\nInsert a owner name: ");
+			System.out.print("\nEnter owner's name: ");
 			owner = sc.next();
 			
 			Account acc = new Account(numberAccount, typeAcc, owner);
@@ -38,73 +38,75 @@ public class Program {
 			} else if(typeAcc == 1) {
 				balanceMod += 150;
 				acc.setBalance(balanceMod);
-			} else System.out.println("Valor inválido");		
+			} else System.out.println("Enter a valid value");		
 			
 			int ans = 0;
 			double value = 0;
 			do {
+				System.out.println("=======================================================");
 				//criar o método tela inicial aqui;
-				System.out.println("O que você deseja fazer?\n");
-				System.out.println("0. Verificar dados da conta");
-				System.out.println("1. Verificar saldo bancário");
-				System.out.println("2. Sacar");
-				System.out.println("3. Depositar");
-				System.out.println("4. Pagar mensalidade");
-				System.out.println("5. Encerrar conta");
-				System.out.println("6. Sair");
+				System.out.println("Choose an option:\n");
+				System.out.println("0. Verify account data;\n");
+				System.out.println("1. Verify bank balance;");
+				System.out.println("2. Withdraw amount;");
+				System.out.println("3. Cash deposit;");
+				System.out.println("4. Pay monthly;");
+				System.out.println("5. Close my account;");
+				System.out.println("6. Exit");
 				
 				System.out.print("=> ");
 				ans = sc.nextInt();
-				
+				System.out.println("=======================================================");
+
 					switch(ans) {
 						case 0: 
 							if (acc.getStatus()==true) {
 								System.out.println(acc.toString());
 							} else if (acc.getStatus()==false) {
-								System.out.println("Não é possível verificar os dados da conta, ela não se encontra ativa.");
+								System.out.println("It isn't possible to verify the account data because it isn't active.\n");
 							}
-							
 							//chamar o metodo tela inicial novamente.
 							break;
 						case 1: 
 							if (acc.getStatus()==true) {
-								System.out.printf("Saldo: " + acc.getBalance() + "\n");
+								System.out.printf("Balance: " + acc.getBalance() + "\n");
 							} else if (acc.getStatus()==false) {
-								System.out.println("Não é possível verificar os dados da conta, ela não se encontra ativa.");
+								System.out.println("It isn't possible to verify the account data because it isn't active.\n");
 							}
 							break;
 						case 2:
 							if (acc.getStatus() == true) {
-								System.out.println("Informe a quantidade de saque: ");
+								System.out.println("Enter withdrawal amount: ");
 								value = sc.nextDouble();
 								acc.sacar(value);
 								
-								System.out.println("Novo saldo: " + acc.getBalance());
+								System.out.println("New balance: " + acc.getBalance());
 								System.out.println();
 
 							} else if (acc.getStatus() == false) {
-								System.out.println("Não foi possível concluir a operação, a conta se encontra fechada.\n");
+								System.out.println("It isn't possible to verify the account data because it isn't active.\n");
 							}
 							break;
 						case 3: 
 							if (acc.getStatus() == true) {
-								System.out.println("Informe a quantidade de depósito: ");
+								System.out.println("Enter deposit amount: ");
 								value = sc.nextDouble();
 								acc.depositar(value);
 								
-								System.out.println("Novo saldo: " + acc.getBalance());
+								System.out.println("New balance: " + acc.getBalance());
 								System.out.println();
 
 							} else if (acc.getStatus() == false) {
-								System.out.println("Não foi possível concluir a operação, a conta se encontra fechada.\n");
+								System.out.println("It isn't possible to verify the account data because it isn't active.\n");
 							}
 						
 							break;
 						case 4: 
 							if (acc.getStatus() == true) {
-								acc.pagarMensalidade();
+								System.out.println("Monthly paid successfully!");
+								acc.monthlyPayment();
 							} else if (acc.getStatus() == false) {
-								System.out.println("Não foi possível concluir a operação, a conta se encontra fechada.\n");
+								System.out.println("It isn't possible to verify the account data because it isn't active.\n");
 							}
 							break;
 						case 5: 
@@ -112,23 +114,27 @@ public class Program {
 								acc.closeAcc();
 								
 								if(acc.closeAcc() == 0) {
-									System.out.println("Conta trancada. Status = fechada [" + acc.getStatus() + "]\n");
+									System.out.println("Account closed. Status [ Closed " + acc.getStatus() + " ]\n");
 								} else if (acc.closeAcc() == 1) {
-									System.out.println("Você possui débitos pendentes; Não foi possível fechar sua conta.");
-									System.out.println("Status da conta: " +acc.getStatus());
+									if (acc.getBalance() < 0) {
+										System.out.println("You have outstanding debits; Unable to close your account.");
+									} else if (acc.getBalance() > 0) {
+										System.out.println("You need to withdraw your entire current balance before closing your accoutn.");
+									}
+									System.out.println("Account status: " +acc.getStatus());
 								}
 							} else if (acc.getStatus()==false) {
-								System.out.println("A conta " + acc.getNumAcc() + " se encontra fechada. Deseja reativa-la?");
-								System.out.println("0. Sim.\n1. Não\n");
+								System.out.println("The account " + acc.getNumAcc() + " is closed. Do you want to reactivate it?");
+								System.out.println("0. Yes.\n1. No\n");
 								
 								int answr = sc.nextInt();
 								System.out.print("=> ");
 
 								if (answr == 0) {
 									acc.openAcc();
-									System.out.println("Bem vindo de volta " + acc.getOwner());
+									System.out.println("Welcome back " + acc.getOwner() + "!");
 								} else if (answr == 1) {
-									System.out.println("Operação cancelada.");
+									System.out.println("Operation canceled.");
 									break;
 								} else break;
 								
@@ -138,7 +144,7 @@ public class Program {
 					}
 			} while(ans!=6);
 			
-			System.out.println("Volte sempre.");
+			System.out.println("Come back often!\n\n [App closed]");
 	}
 	
 }
